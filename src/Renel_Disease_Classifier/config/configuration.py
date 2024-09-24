@@ -1,7 +1,9 @@
 from Renel_Disease_Classifier.constants import *
 from Renel_Disease_Classifier.utils.common import read_yaml, create_directories
 from Renel_Disease_Classifier.entity.config_entity import DataIngestionConfig
-
+from Renel_Disease_Classifier.entity.config_entity import PrepareBaseModelConfig
+from Renel_Disease_Classifier.exception import RenelException
+import sys
 
 class ConfigurationManager:
     def __init__(
@@ -31,3 +33,25 @@ class ConfigurationManager:
         
 
 
+    def get_prepare_base_model_config(self) -> PrepareBaseModelConfig:
+        try:
+            config = self.config.prepare_base_model
+
+            create_directories([config.root_dir])
+
+            prepare_base_model_config = PrepareBaseModelConfig(
+                root_dir=Path(config.root_dir),
+                base_model_path=Path(config.base_model_path),
+                updated_base_model_path=Path(config.updated_base_model_path),
+                params_image_size=self.params.IMAGE_SIZE,
+                params_learning_rate=self.params.LEARNING_RATE,
+                params_batch_size=self.params.BATCH_SIZE,
+                params_include_top=self.params.INCLUDE_TOP,
+                params_weights=self.params.WEIGHTS,
+                params_classes=self.params.CLASSES
+                )
+            
+            return prepare_base_model_config
+
+        except Exception as e:
+            raise RenelException(e,sys)

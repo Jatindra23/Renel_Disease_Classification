@@ -3,7 +3,12 @@ from Renel_Disease_Classifier.utils.common import read_yaml, create_directories
 from Renel_Disease_Classifier.entity.config_entity import DataIngestionConfig
 from Renel_Disease_Classifier.entity.config_entity import PrepareBaseModelConfig
 from Renel_Disease_Classifier.exception import RenelException
+from Renel_Disease_Classifier.entity.config_entity import PrepareBaseModelConfig
+from Renel_Disease_Classifier.entity.config_entity import TrainingConfig
 import sys
+import os
+
+import tensorflow as tf
 
 class ConfigurationManager:
     def __init__(
@@ -55,3 +60,25 @@ class ConfigurationManager:
 
         except Exception as e:
             raise RenelException(e,sys)
+        
+    def get_training_config(self)->TrainingConfig:
+        training = self.config.training
+        prepare_base_model = self.config.prepare_base_model
+        params = self.params
+        training_data = os.path.join(self.config.data_ingestion.unzip_dir, "kidney_new\CT-KIDNEY-DATASET-Normal-Cyst-Tumor-Stone")
+        create_directories([
+            Path(training.root_dir)
+        ])
+
+        training_config = TrainingConfig(
+            root_dir=Path(training.root_dir),
+            trained_model_path=Path(training.trained_model_path),
+            updated_base_model_path=Path(prepare_base_model.updated_base_model_path),
+            training_data=Path(training_data),
+            params_epochs=params.EPOCHS,
+            params_batch_size=params.BATCH_SIZE,
+            params_is_augmentation=params.AUGMENTATION,
+            params_image_size=params.IMAGE_SIZE
+        )
+
+        return training_config

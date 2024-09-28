@@ -4,7 +4,7 @@ from Renel_Disease_Classifier.entity.config_entity import DataIngestionConfig
 from Renel_Disease_Classifier.entity.config_entity import PrepareBaseModelConfig
 from Renel_Disease_Classifier.exception import RenelException
 from Renel_Disease_Classifier.entity.config_entity import PrepareBaseModelConfig
-from Renel_Disease_Classifier.entity.config_entity import TrainingConfig
+from Renel_Disease_Classifier.entity.config_entity import TrainingConfig,EvaluationConfig
 import sys
 import os
 
@@ -82,3 +82,15 @@ class ConfigurationManager:
         )
 
         return training_config
+    
+    def get_evaluation_config(self)-> EvaluationConfig:
+        eval_config = EvaluationConfig(
+            path_of_model="artifacts/training/model.h5",
+            training_data="artifacts\data_ingestion\kidney_new\CT-KIDNEY-DATASET-Normal-Cyst-Tumor-Stone",
+            mlflow_uri="https://dagshub.com/jatin9091/Renel_Disease_Classification_Deep_Learning.mlflow",
+            all_params=self.params,
+            params_image_size=self.params.IMAGE_SIZE,
+            params_batch_size=self.params.BATCH_SIZE
+        )
+
+        return eval_config

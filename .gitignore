@@ -40,6 +40,9 @@ logs
 #artifacts
 artifacts/*
 
+#mlflow
+mlruns
+
 #envfile
 .env
 

@@ -46,6 +46,11 @@ mlruns
 #envfile
 .env
 
+#dvc
+dvc.lock
+.dvcignore
+
+
 # Unit test / coverage reports
 htmlcov/
 .tox/

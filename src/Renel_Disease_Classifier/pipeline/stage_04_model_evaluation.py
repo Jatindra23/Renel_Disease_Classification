@@ -7,6 +7,7 @@ import sys
 
 STAGE_NAME = "Model Evaluation Stage"
 
+
 class EvaluationPipeline:
     def __init__(self):
         pass
@@ -22,11 +23,11 @@ class EvaluationPipeline:
 
         except Exception as e:
             raise RenelException(e, sys)
-        
+
 
 if __name__ == "__main__":
     try:
         obj = EvaluationPipeline()
         obj.main()
     except Exception as e:
-        raise RenelException(e,sys)
+        raise RenelException(e, sys)

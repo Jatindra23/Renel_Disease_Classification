@@ -1,0 +1,67 @@
+stages:
+  data_ingestion:
+    cmd: python src/Renel_Disease_Classifier/pipeline/stage_01_data_ingestion.py
+    deps:
+      - src/Renel_Disease_Classifier/pipeline/stage_01_data_ingestion.py
+      - config/config.yaml
+    outs:
+      - artifacts/data_ingestion/kidney_new/CT-KIDNEY-DATASET-Normal-Cyst-Tumor-Stone
+      - artifacts/data_ingestion/data.zip
+
+  prepare_base_model:
+    cmd: python src/Renel_Disease_Classifier/pipeline/stage_02_prepare_base_model.py
+    deps:
+      - src/Renel_Disease_Classifier/pipeline/stage_02_prepare_base_model.py
+      - config/config.yaml
+    params:
+      - IMAGE_SIZE
+      - BATCH_SIZE
+      - EPOCHS
+      - AUGMENTATION
+      - INCLUDE_TOP
+      - WEIGHTS
+      - CLASSES
+      - LEARNING_RATE
+    outs:
+      - artifacts/prepare_base_model
+
+
+  training:
+    cmd: python src/Renel_Disease_Classifier/pipeline/stage_03_model_training.py
+    deps:
+      - src/Renel_Disease_Classifier/pipeline/stage_03_model_training.py
+      - artifacts/data_ingestion/kidney_new/CT-KIDNEY-DATASET-Normal-Cyst-Tumor-Stone
+      - config/config.yaml
+      - artifacts/prepare_base_model
+    params:
+      - EPOCHS
+      - BATCH_SIZE
+      - LEARNING_RATE
+      - AUGMENTATION
+      - INCLUDE_TOP
+      - WEIGHTS
+      - CLASSES
+      - IMAGE_SIZE
+    outs:
+      - artifacts/training/model.h5
+
+  evaluation:
+    cmd: python src/Renel_Disease_Classifier/pipeline/stage_04_model_evaluation.py
+    deps:
+      - src/Renel_Disease_Classifier/pipeline/stage_04_model_evaluation.py
+      - artifacts/data_ingestion/kidney_new/CT-KIDNEY-DATASET-Normal-Cyst-Tumor-Stone
+      - config/config.yaml
+      - artifacts/training/model.h5
+    params:
+      - EPOCHS
+      - BATCH_SIZE
+      - LEARNING_RATE
+      - AUGMENTATION
+      - INCLUDE_TOP
+      - WEIGHTS
+      - CLASSES
+      - IMAGE_SIZE
+    metrics:
+    - scores.json:
+        cache: false
+      

@@ -47,7 +47,7 @@ mlruns
 .env
 
 #dvc
-dvc.lock
+# dvc.lock
 .dvcignore
 
 

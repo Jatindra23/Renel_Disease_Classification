@@ -8,7 +8,7 @@ from Renel_Disease_Classifier.pipeline.stage_04_model_evaluation import Evaluati
 
 
 STAGE_NAME = "Data Ingestion Stage"
-try:
+try: 
     logging.info(f">>>>>>> stage {STAGE_NAME} started <<<<<<\n\nx==========x")
     obj = DataIngestionTrainingPipeline()
     obj.main()

@@ -1,21 +1,22 @@
 import setuptools
 import sys
 from typing import List
-from Renel_Disease_Classifier.exception import RenelException
-from Renel_Disease_Classifier.logger import logging
+from src.Renel_Disease_Classifier.exception import RenelException
+from src.Renel_Disease_Classifier.logger import logging
 
 
 def get_requirements() -> List[str]:
     requirements_list: List[str] = []
 
     try:
-        logging.info("trying to open requirementrs.txt file")
+        # logging.info("trying to open requirementrs.txt file")
         with open("requirements.txt", "r") as f:
             requirements_list = f.readlines()
 
     except Exception as e:
-        logging.exception(f"an error occcured {e}")
-        raise RenelException(e, sys)
+        # logging.exception(f"an error occcured {e}")
+        # raise RenelException(e, sys)
+        raise e
 
     # Strip newline characters and remove '-e .' from the list
     requirements_list = [

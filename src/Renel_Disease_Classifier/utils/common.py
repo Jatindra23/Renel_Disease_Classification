@@ -110,8 +110,53 @@ def decodeImage(image_file, filename):
         raise
 
 
-
 @ensure_annotations
 def encodeImageIntoBase64(croppedImagePath):
     with open(croppedImagePath, "rb") as f:
         return base64.b64encode(f.read()).decode("utf-8")
+
+
+import shutil
+import os
+
+
+@ensure_annotations
+def copy_model(src, dst):
+    """
+    Copy a model file or directory from src to dst.
+
+    Parameters:
+    - src (str): Source path (file or directory).
+    - dst (str): Destination path (file or directory).
+
+    Raises:
+    - ValueError: If the source path does not exist.
+    - FileExistsError: If the destination directory exists when copying a directory.
+    """
+    # Check if source exists
+    if not os.path.exists(src):
+        logging.error(f"Source path '{src}' does not exist.")
+
+    # Check if destination is a directory
+    dst_dir = os.path.dirname(dst)
+    if not os.path.isdir(dst):
+        os.makedirs(dst)
+        logging.info((f"Destination directory '{dst_dir}' created."))
+
+    # If source is a file, copy the file
+    if os.path.isfile(src):
+        shutil.copy(src, dst)
+        logging.info(f"File copied successfully from '{src}' to '{dst}'.")
+
+    # If source is a directory, copy the entire directory
+    # elif os.path.isdir(src):
+    #     shutil.copytree(src, dst)
+    #     print(f"Directory copied successfully from '{src}' to '{dst}'.")
+
+    else:
+        logging.info(f"Source path '{src}' is neither a file nor a directory.")
+
+
+# Example usage:
+# copy_model('path/to/source/model.h5', 'path/to/destination/model.h5')  # For a file
+# copy_model('path/to/source/directory/', 'path/to/destination/directory/')  # For a directory

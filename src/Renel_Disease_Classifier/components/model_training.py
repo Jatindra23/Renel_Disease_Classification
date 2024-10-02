@@ -70,6 +70,7 @@ class Training:
             validation_steps=self.validation_steps,
             validation_data=self.valid_generator,
         )
+
         self.save_model(path=self.config.trained_model_path, model=self.model)
         # copy_model(
         #     "Renel_Disease_Classification_Deep_Learning/artifacts/training/model.h5",
